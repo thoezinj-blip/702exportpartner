@@ -1,1 +1,443 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>702 수출 파트너 등록</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Malgun Gothic',sans-serif;background:#F4F6FA;color:#1A1A2E;min-height:100vh}
+.header{background:#1A2340;padding:16px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100}
+.logo{width:36px;height:36px;background:#C0792B;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.header-title{color:#fff;font-size:15px;font-weight:600}
+.header-sub{color:#AABBD4;font-size:12px;margin-top:2px}
+.container{max-width:600px;margin:0 auto;padding:24px 16px 60px}
+.steps{display:flex;gap:6px;margin-bottom:24px}
+.step{flex:1;height:4px;border-radius:2px;background:#D8DCE6}
+.step.done{background:#1A2340}.step.cur{background:#C0792B}
+.page{display:none}.page.active{display:block}
+.card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.07);margin-bottom:14px}
+.card-title{font-size:15px;font-weight:600;color:#1A2340;margin-bottom:16px}
+.sec-label{font-size:12px;font-weight:600;color:#C0792B;margin:18px 0 10px;letter-spacing:.03em}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;color:#6B7A99;margin-bottom:6px;font-weight:500}
+.field input,.field select,.field textarea{width:100%;border:1px solid #D8DCE6;border-radius:8px;padding:10px 12px;font-size:14px;color:#1A1A2E;background:#fff;outline:none;transition:border .15s;font-family:inherit}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:#1A2340}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.range-row{display:grid;grid-template-columns:1fr 28px 1fr;gap:6px;align-items:center}
+.range-row .tilde{text-align:center;color:#6B7A99;font-size:14px;padding-top:8px}
+.tag-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;min-height:38px;padding:8px;background:#F4F6FA;border-radius:8px;border:1px solid #E8ECF4}
+.tag{display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:4px 10px;border-radius:20px;font-weight:500}
+.tag-green{background:#EAF3DE;color:#3B6D11;border:1px solid #C0DD97}
+.del{cursor:pointer;font-size:15px;opacity:.6;line-height:1;background:none;border:none;color:inherit;padding:0}
+.del:hover{opacity:1}
+.empty-msg{font-size:12px;color:#A0AABB;padding:4px 2px}
+.btn-add{height:38px;padding:0 14px;background:#F4F6FA;color:#1A2340;border:1px solid #D8DCE6;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer}
+.btn-add:hover{background:#E8ECF4}
+.btn-main{width:100%;height:46px;background:#1A2340;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px}
+.btn-main:hover{background:#253358}
+.btn-main:disabled{opacity:.4;cursor:not-allowed}
+.btn-back{background:none;border:1px solid #D8DCE6;border-radius:8px;padding:8px 16px;font-size:13px;color:#6B7A99;cursor:pointer;margin-bottom:16px}
+.btn-back:hover{background:#F4F6FA}
+.btn-verify{height:38px;padding:0 12px;background:#1A2340;color:#fff;border:none;border-radius:8px;font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.sbar{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:8px;font-size:13px;margin-top:12px}
+.sbar.ok{background:#EAF3DE;color:#3B6D11;border:1px solid #C0DD97}
+.sbar.err{background:#FCEBEB;color:#A32D2D;border:1px solid #F7C1C1}
+.sbar.ing{background:#F4F6FA;color:#5A6A7E;border:1px solid #D8DCE6}
+.check-group{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.check-item{display:flex;align-items:center;gap:5px;font-size:13px;cursor:pointer}
+.check-item input{width:15px;height:15px;accent-color:#1A2340}
+.contact-card{background:#F4F6FA;border-radius:8px;padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.contact-name{font-size:13px;font-weight:600;color:#1A2340;margin-bottom:2px}
+.contact-detail{font-size:12px;color:#6B7A99}
+.contact-del{background:none;border:none;color:#A0AABB;cursor:pointer;font-size:18px;padding:4px}
+.contact-del:hover{color:#E24B4A}
+.car-cond-card{background:#F4F6FA;border-radius:10px;padding:14px;margin-bottom:10px;border:1px solid #E8ECF4}
+.info-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #F0F2F6;font-size:14px}
+.info-row:last-child{border-bottom:none}
+.info-lbl{color:#6B7A99}
+.info-val{font-weight:600;color:#1A2340;text-align:right;max-width:65%}
+.chip{display:inline-flex;font-size:12px;padding:3px 10px;border-radius:16px;margin:2px;background:#F0F2F6;color:#5A6A7E;border:1px solid #E0E4EE}
+.divider{height:1px;background:#F0F2F6;margin:16px 0}
+.success-wrap{text-align:center;padding:32px 20px}
+.ok-circle{width:72px;height:72px;border-radius:50%;background:#EAF3DE;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:36px}
+.ok-title{font-size:20px;font-weight:700;color:#1A2340;margin-bottom:8px}
+.ok-desc{font-size:14px;color:#6B7A99;line-height:1.7;margin-bottom:20px}
+.summary-box{background:#F4F6FA;border-radius:10px;padding:14px;margin-bottom:20px;text-align:left;font-size:13px}
+.btn-reset{background:none;border:1px solid #D8DCE6;border-radius:8px;padding:10px 20px;font-size:13px;color:#6B7A99;cursor:pointer}
+.input-with-btn{display:flex;gap:8px}
+.input-with-btn input{flex:1}
+.sub-box{background:#F8F9FC;border-radius:10px;padding:14px;border:1px solid #E8ECF4}
+.sub-box-title{font-size:12px;color:#6B7A99;font-weight:500;margin-bottom:10px}
+.car-scroll{max-height:200px;overflow-y:auto;border:1px solid #E8ECF4;border-radius:8px;padding:10px;background:#fff;margin-top:8px}
+@media(max-width:420px){.field-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">702</div>
+  <div>
+    <div class="header-title">코오롱모빌리티그룹</div>
+    <div class="header-sub">수출 파트너 등록 시스템</div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="steps">
+    <div class="step cur" id="s1"></div>
+    <div class="step" id="s2"></div>
+    <div class="step" id="s3"></div>
+    <div class="step" id="s4"></div>
+  </div>
+
+  <!-- PAGE 1: 업체 기본정보 + 담당자 -->
+  <div class="page active" id="page1">
+    <div class="card">
+      <div class="card-title">🏢 업체 기본정보</div>
+      <div class="field"><label>업체명 *</label><input type="text" id="compName" placeholder="예: 글로벌무역(주)"></div>
+      <div class="field-row">
+        <div class="field"><label>사업자등록번호 *</label><input type="text" id="bizNo" placeholder="000-00-00000" maxlength="12"></div>
+        <div class="field"><label>대표자명</label><input type="text" id="ceoName" placeholder="홍길동"></div>
+      </div>
+      <div class="field"><label>주소</label><input type="text" id="address" placeholder="사업장 주소"></div>
+
+      <div class="divider"></div>
+      <div class="sec-label">담당자 등록</div>
+      <div id="contactList"></div>
+      <div class="sub-box">
+        <p class="sub-box-title">담당자 추가</p>
+        <div class="field"><label>담당자 이름</label><input type="text" id="ctName" placeholder="홍길동"></div>
+        <div class="field">
+          <label>담당자 연락처</label>
+          <div class="input-with-btn">
+            <input type="text" id="ctPhone" placeholder="010-0000-0000" maxlength="13">
+            <button class="btn-verify" onclick="verifyPhone()">승인번호확인</button>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:0"><label>담당자 직책</label><input type="text" id="ctRole" placeholder="예: 팀장, 대리"></div>
+        <button class="btn-add" style="margin-top:10px;width:100%" onclick="addContact()">+ 담당자 추가</button>
+      </div>
+      <div id="authStatus"></div>
+      <button class="btn-main" onclick="doStep1()">다음 단계 →</button>
+    </div>
+  </div>
+
+  <!-- PAGE 2: 수출 국가 -->
+  <div class="page" id="page2">
+    <button class="btn-back" onclick="goPage(1)">← 이전</button>
+    <div class="card">
+      <div class="card-title">🌍 수출 국가 등록</div>
+      <p style="font-size:13px;color:#6B7A99;margin-bottom:14px">수출 대상 국가를 선택해 주세요. 복수 선택 가능합니다.</p>
+      <input type="text" id="countrySearch" placeholder="국가 검색..." style="width:100%;border:1px solid #D8DCE6;border-radius:8px;padding:10px 12px;font-size:14px;outline:none;margin-bottom:14px" oninput="filterCountries()">
+      <div id="countryGroups"></div>
+      <div class="divider"></div>
+      <p style="font-size:13px;color:#6B7A99;margin-bottom:8px;font-weight:500">선택된 국가</p>
+      <div class="tag-wrap" id="selectedCountries"><span class="empty-msg">선택된 국가 없음</span></div>
+      <button class="btn-main" onclick="doStep2()">다음 단계 →</button>
+    </div>
+  </div>
+
+  <!-- PAGE 3: 관심차종 -->
+  <div class="page" id="page3">
+    <button class="btn-back" onclick="goPage(2)">← 이전</button>
+    <div class="card">
+      <div class="card-title">🚗 관심차종 등록</div>
+      <p style="font-size:13px;color:#6B7A99;margin-bottom:14px">관심 차종 및 희망 조건을 입력 후 추가해 주세요. 복수 등록 가능합니다.</p>
+
+      <div class="field">
+        <label>차종 선택</label>
+        <input type="text" id="carSearch" placeholder="차종 검색..." oninput="filterCars()">
+        <div class="car-scroll" id="carGroups"></div>
+      </div>
+
+      <div class="divider"></div>
+      <p style="font-size:13px;font-weight:500;color:#1A2340;margin-bottom:12px">희망 조건</p>
+
+      <div class="field">
+        <label>연식</label>
+        <div class="range-row">
+          <input type="number" id="yearFrom" placeholder="2018" min="2000" max="2026">
+          <span class="tilde">~</span>
+          <input type="number" id="yearTo" placeholder="2024" min="2000" max="2026">
+        </div>
+      </div>
+      <div class="field">
+        <label>희망가 (만원)</label>
+        <div class="range-row">
+          <input type="number" id="priceFrom" placeholder="1,000">
+          <span class="tilde">~</span>
+          <input type="number" id="priceTo" placeholder="3,000">
+        </div>
+      </div>
+      <div class="field">
+        <label>주행거리 (km)</label>
+        <div class="range-row">
+          <input type="number" id="mileFrom" placeholder="0">
+          <span class="tilde">~</span>
+          <input type="number" id="mileTo" placeholder="100,000">
+        </div>
+      </div>
+      <div class="field">
+        <label>색상</label>
+        <div class="field-row">
+          <div><p style="font-size:12px;color:#A0AABB;margin-bottom:4px">외부</p><input type="text" id="colorOut" placeholder="예: 흰색, 검정"></div>
+          <div><p style="font-size:12px;color:#A0AABB;margin-bottom:4px">내부</p><input type="text" id="colorIn" placeholder="예: 베이지, 블랙"></div>
+        </div>
+      </div>
+      <div class="field">
+        <label>사고이력</label>
+        <div class="check-group">
+          <label class="check-item"><input type="checkbox" value="무사고" class="acc-chk"> 무사고</label>
+          <label class="check-item"><input type="checkbox" value="판금" class="acc-chk"> 판금</label>
+          <label class="check-item"><input type="checkbox" value="교환" class="acc-chk"> 교환</label>
+          <label class="check-item"><input type="checkbox" value="프레임" class="acc-chk"> 프레임</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>도막판수</label>
+        <select id="paintCount">
+          <option value="">선택</option>
+          <option>1판</option><option>2판</option><option>3판</option><option>4판</option><option>5판 이상</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>필수옵션</label>
+        <div class="check-group">
+          <label class="check-item"><input type="checkbox" value="선루프" class="opt-chk"> 선루프</label>
+          <label class="check-item"><input type="checkbox" value="내비게이션" class="opt-chk"> 내비게이션</label>
+          <label class="check-item"><input type="checkbox" value="열선시트" class="opt-chk"> 열선시트</label>
+          <label class="check-item"><input type="checkbox" value="통풍시트" class="opt-chk"> 통풍시트</label>
+          <label class="check-item"><input type="checkbox" value="어라운드뷰" class="opt-chk"> 어라운드뷰</label>
+          <label class="check-item"><input type="checkbox" value="HUD" class="opt-chk"> HUD</label>
+          <label class="check-item"><input type="checkbox" value="전동시트" class="opt-chk"> 전동시트</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>기타 요청사항</label>
+        <textarea id="etcNote" rows="2" placeholder="기타 조건을 자유롭게 입력해 주세요."></textarea>
+      </div>
+      <div class="field">
+        <label>요청 대수</label>
+        <input type="number" id="reqCount" placeholder="예: 5" min="1" style="max-width:120px">
+      </div>
+
+      <button class="btn-add" style="width:100%" onclick="addCarCond()">+ 위 조건으로 관심차종 추가</button>
+
+      <div class="divider"></div>
+      <p style="font-size:13px;color:#6B7A99;margin-bottom:8px;font-weight:500">등록된 관심차종</p>
+      <div id="carCondList"><p class="empty-msg">등록된 관심차종 없음</p></div>
+
+      <button class="btn-main" onclick="doStep3()">다음 단계 →</button>
+    </div>
+  </div>
+
+  <!-- PAGE 4: 최종 확인 -->
+  <div class="page" id="page4">
+    <button class="btn-back" onclick="goPage(3)">← 이전</button>
+    <div class="card">
+      <div class="card-title">📋 등록 내용 확인</div>
+      <div class="sec-label">업체 정보</div>
+      <div class="info-row"><span class="info-lbl">업체명</span><span class="info-val" id="c_name"></span></div>
+      <div class="info-row"><span class="info-lbl">사업자번호</span><span class="info-val" id="c_biz"></span></div>
+      <div class="info-row"><span class="info-lbl">대표자</span><span class="info-val" id="c_ceo"></span></div>
+      <div class="sec-label">담당자</div>
+      <div id="c_contacts"></div>
+      <div class="sec-label">수출 국가</div>
+      <div id="c_countries" style="margin-bottom:8px"></div>
+      <div class="sec-label">관심차종</div>
+      <div id="c_cars"></div>
+      <div id="saveStatus"></div>
+      <button class="btn-main" id="saveBtn" onclick="doSave()">등록 완료</button>
+    </div>
+  </div>
+
+  <!-- PAGE 5: 완료 -->
+  <div class="page" id="page5">
+    <div class="card">
+      <div class="success-wrap">
+        <div class="ok-circle">✅</div>
+        <div class="ok-title">등록이 완료되었습니다</div>
+        <p class="ok-desc">관심 차종 입고 시 카톡 알림을 발송해 드립니다.<br>변경이 필요하면 언제든지 다시 접속해 주세요.</p>
+        <div class="summary-box" id="savedSummary"></div>
+        <button class="btn-reset" onclick="resetAll()">↺ 처음으로</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SHEET_URL="https://script.google.com/macros/s/AKfycbwj0FJsJqo9NmEGifzDYXnSbiTIePGvqgJ506_XvHMGaV5blc4U0zaR-VOQs8GoFi_oNQ/exec";
+
+const ALL_COUNTRIES={
+  "아시아":["일본","중국","대만","홍콩","싱가포르","말레이시아","태국","인도네시아","필리핀","베트남","인도","미얀마","캄보디아","몽골","카자흐스탄","우즈베키스탄","키르기즈스탄","타지키스탄","투르크메니스탄","아제르바이잔","조지아","아르메니아"],
+  "중동":["아랍에미리트","사우디아라비아","쿠웨이트","카타르","바레인","오만","요르단","이라크","이란"],
+  "유럽":["독일","영국","프랑스","이탈리아","스페인","폴란드","체코","헝가리","루마니아","러시아","우크라이나","네덜란드"],
+  "아프리카":["나이지리아","케냐","남아프리카공화국","이집트","에티오피아","탄자니아","가나","모로코"],
+  "북아메리카":["미국","캐나다","멕시코"],
+  "남아메리카":["브라질","칠레","페루","콜롬비아","아르헨티나","에콰도르"],
+  "오세아니아":["오스트레일리아","뉴질랜드"]
+};
+
+const ALL_CARS={
+  "현대":["아반떼","쏘나타","그랜저","투싼","싼타페","팰리세이드","코나","아이오닉5","아이오닉6","스타리아","캐스퍼"],
+  "기아":["K3","K5","K8","K9","셀토스","스포티지","쏘렌토","카니발","EV6","EV9","레이","모닝"],
+  "제네시스":["G70","G80","G90","GV70","GV80","GV90","GV60"],
+  "쌍용(KG모빌리티)":["티볼리","코란도","렉스턴","렉스턴스포츠","토레스","토레스EVX"],
+  "르노코리아":["QM6","SM6","XM3","그랑콜레오스"],
+  "한국GM":["트레일블레이저","트랙스","스파크","말리부","이쿼녹스"],
+  "BMW":["3시리즈","5시리즈","7시리즈","X3","X5","X7","iX","i4"],
+  "벤츠":["C클래스","E클래스","S클래스","GLC","GLE","GLS","EQS"],
+  "아우디":["A4","A6","A8","Q3","Q5","Q7","Q8","e-tron"],
+  "폭스바겐":["골프","파사트","티구안","투아렉","ID.4"],
+  "토요타/렉서스":["캠리","RAV4","하이랜더","프리우스","알파드","ES","NX","RX"],
+  "기타":["기타차종"]
+};
+
+let contacts=[],selCountries=[],carConds=[],selectedCars=[],user={};
+
+function goPage(n){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page'+n).classList.add('active');
+  [1,2,3,4].forEach(i=>{
+    const el=document.getElementById('s'+i);if(!el)return;
+    el.classList.remove('done','cur');
+    if(i<n)el.classList.add('done');
+    else if(i===n)el.classList.add('cur');
+  });
+  if(n===5)[1,2,3,4].forEach(i=>{const el=document.getElementById('s'+i);if(el)el.classList.add('done');});
+  window.scrollTo(0,0);
+}
+
+function st(id,msg,t){
+  const el=document.getElementById(id);if(!msg){el.innerHTML='';return;}
+  el.innerHTML=`<div class="sbar ${t}">${{ok:'✓',err:'✕',ing:'..'}[t]} ${msg}</div>`;
+}
+
+// 담당자
+function verifyPhone(){const p=document.getElementById('ctPhone').value.trim();if(!p){alert('연락처를 입력해 주세요.');return;}alert('승인번호가 발송되었습니다.');}
+function addContact(){
+  const name=document.getElementById('ctName').value.trim();
+  const phone=document.getElementById('ctPhone').value.trim();
+  const role=document.getElementById('ctRole').value.trim();
+  if(!name||!phone){alert('이름과 연락처를 입력해 주세요.');return;}
+  contacts.push({name,phone,role});
+  ['ctName','ctPhone','ctRole'].forEach(id=>document.getElementById(id).value='');
+  renderContacts();
+}
+function renderContacts(){
+  const el=document.getElementById('contactList');
+  el.innerHTML=contacts.map((c,i)=>`<div class="contact-card"><div><div class="contact-name">${c.name}${c.role?` (${c.role})`:''}</div><div class="contact-detail">${c.phone}</div></div><button class="contact-del" onclick="rmContact(${i})">×</button></div>`).join('');
+}
+function rmContact(i){contacts.splice(i,1);renderContacts();}
+
+function doStep1(){
+  const name=document.getElementById('compName').value.trim();
+  const biz=document.getElementById('bizNo').value.trim();
+  if(!name||!biz){st('authStatus','업체명과 사업자등록번호를 입력해 주세요.','err');return;}
+  if(biz.replace(/-/g,'').length<10){st('authStatus','사업자등록번호를 정확히 입력해 주세요.','err');return;}
+  user={name,biz,ceo:document.getElementById('ceoName').value.trim(),address:document.getElementById('address').value.trim()};
+  goPage(2);
+}
+
+// 국가
+function buildCountryGroups(filter){
+  const el=document.getElementById('countryGroups');el.innerHTML='';
+  Object.entries(ALL_COUNTRIES).forEach(([region,countries])=>{
+    const list=filter?countries.filter(c=>c.includes(filter)):countries;
+    if(!list.length)return;
+    const d=document.createElement('div');d.style.marginBottom='14px';
+    d.innerHTML=`<p style="font-size:12px;font-weight:600;color:#C0792B;margin-bottom:8px">${region}</p><div class="check-group">${list.map(c=>`<label class="check-item"><input type="checkbox" class="ctr-chk" value="${c}" ${selCountries.includes(c)?'checked':''} onchange="toggleCountry('${c}',this.checked)"> ${c}</label>`).join('')}</div>`;
+    el.appendChild(d);
+  });
+}
+function filterCountries(){buildCountryGroups(document.getElementById('countrySearch').value.trim());}
+function toggleCountry(c,checked){if(checked){if(!selCountries.includes(c))selCountries.push(c);}else{selCountries=selCountries.filter(x=>x!==c);}renderSelCountries();}
+function renderSelCountries(){
+  const w=document.getElementById('selectedCountries');
+  w.innerHTML=selCountries.length?selCountries.map((c,i)=>`<span class="tag tag-green">${c}<button class="del" onclick="rmCountry(${i})">×</button></span>`).join(''):'<span class="empty-msg">선택된 국가 없음</span>';
+}
+function rmCountry(i){const c=selCountries[i];selCountries.splice(i,1);renderSelCountries();document.querySelectorAll('.ctr-chk').forEach(cb=>{if(cb.value===c)cb.checked=false;});}
+function doStep2(){if(!selCountries.length){alert('국가를 1개 이상 선택해 주세요.');return;}buildCarGroups('');goPage(3);}
+
+// 차종
+function buildCarGroups(filter){
+  const el=document.getElementById('carGroups');el.innerHTML='';
+  Object.entries(ALL_CARS).forEach(([brand,models])=>{
+    const list=filter?models.filter(m=>m.includes(filter)||brand.includes(filter)):models;
+    if(!list.length)return;
+    const d=document.createElement('div');d.style.marginBottom='10px';
+    d.innerHTML=`<p style="font-size:12px;font-weight:600;color:#1A2340;margin-bottom:6px">${brand}</p><div class="check-group">${list.map(m=>{const k=`${brand} ${m}`;return`<label class="check-item"><input type="checkbox" class="car-chk" value="${k}" ${selectedCars.includes(k)?'checked':''} onchange="toggleCar('${k}',this.checked)"> ${m}</label>`;}).join('')}</div>`;
+    el.appendChild(d);
+  });
+}
+function filterCars(){buildCarGroups(document.getElementById('carSearch').value.trim());}
+function toggleCar(key,checked){if(checked){if(!selectedCars.includes(key))selectedCars.push(key);}else{selectedCars=selectedCars.filter(x=>x!==key);}}
+
+function addCarCond(){
+  if(!selectedCars.length){alert('차종을 1개 이상 선택해 주세요.');return;}
+  const acc=Array.from(document.querySelectorAll('.acc-chk:checked')).map(c=>c.value);
+  const opts=Array.from(document.querySelectorAll('.opt-chk:checked')).map(c=>c.value);
+  carConds.push({
+    cars:[...selectedCars],
+    yearFrom:document.getElementById('yearFrom').value,
+    yearTo:document.getElementById('yearTo').value,
+    priceFrom:document.getElementById('priceFrom').value,
+    priceTo:document.getElementById('priceTo').value,
+    mileFrom:document.getElementById('mileFrom').value,
+    mileTo:document.getElementById('mileTo').value,
+    colorOut:document.getElementById('colorOut').value,
+    colorIn:document.getElementById('colorIn').value,
+    accident:acc,paintCount:document.getElementById('paintCount').value,
+    options:opts,etc:document.getElementById('etcNote').value,
+    reqCount:document.getElementById('reqCount').value
+  });
+  renderCarConds();
+  selectedCars=[];
+  ['yearFrom','yearTo','priceFrom','priceTo','mileFrom','mileTo','colorOut','colorIn','etcNote','reqCount'].forEach(id=>document.getElementById(id).value='');
+  document.querySelectorAll('.acc-chk,.opt-chk,.car-chk').forEach(c=>c.checked=false);
+  document.getElementById('paintCount').value='';
+  document.getElementById('carSearch').value='';
+  buildCarGroups('');
+}
+function renderCarConds(){
+  const el=document.getElementById('carCondList');
+  if(!carConds.length){el.innerHTML='<p class="empty-msg">등록된 관심차종 없음</p>';return;}
+  el.innerHTML=carConds.map((c,i)=>`<div class="car-cond-card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="font-size:13px;font-weight:600;color:#1A2340">조건 ${i+1} — ${c.cars.slice(0,2).join(', ')}${c.cars.length>2?` 외 ${c.cars.length-2}종`:''}</span><button class="contact-del" onclick="rmCarCond(${i})">×</button></div><div style="font-size:12px;color:#6B7A99;line-height:1.9">${[c.yearFrom?`연식: ${c.yearFrom}~${c.yearTo}년식`:'',c.priceFrom?`희망가: ${c.priceFrom}~${c.priceTo}만원`:'',c.mileFrom||c.mileTo?`주행: ${c.mileFrom||0}~${c.mileTo}km`:'',c.accident.length?`사고이력: ${c.accident.join(', ')}`:'',c.options.length?`필수옵션: ${c.options.join(', ')}`:'',c.reqCount?`요청대수: ${c.reqCount}대`:''].filter(Boolean).join('<br>')}</div></div>`).join('');
+}
+function rmCarCond(i){carConds.splice(i,1);renderCarConds();}
+
+function doStep3(){
+  if(!carConds.length){alert('관심차종을 1개 이상 등록해 주세요.');return;}
+  document.getElementById('c_name').textContent=user.name;
+  document.getElementById('c_biz').textContent=user.biz;
+  document.getElementById('c_ceo').textContent=user.ceo||'-';
+  document.getElementById('c_contacts').innerHTML=contacts.length?contacts.map(c=>`<div class="info-row"><span class="info-lbl">${c.name}${c.role?` (${c.role})`:''}</span><span class="info-val">${c.phone}</span></div>`).join(''):'<p style="font-size:13px;color:#A0AABB;padding:6px 0">등록된 담당자 없음</p>';
+  document.getElementById('c_countries').innerHTML=selCountries.map(c=>`<span class="chip">🌍 ${c}</span>`).join('');
+  document.getElementById('c_cars').innerHTML=carConds.map((c,i)=>`<div style="background:#F4F6FA;border-radius:8px;padding:10px 12px;margin-bottom:8px;font-size:13px"><p style="font-weight:600;color:#1A2340;margin-bottom:4px">조건 ${i+1}: ${c.cars.join(', ')}</p><p style="color:#6B7A99">${[c.yearFrom?`${c.yearFrom}~${c.yearTo}년식`:'',c.priceFrom?`${c.priceFrom}~${c.priceTo}만원`:'',c.reqCount?`${c.reqCount}대`:''].filter(Boolean).join(' · ')}</p></div>`).join('');
+  st('saveStatus','','');goPage(4);
+}
+
+async function doSave(){
+  const btn=document.getElementById('saveBtn');btn.disabled=true;
+  st('saveStatus','구글 시트에 저장 중...','ing');
+  try{
+    const params=new URLSearchParams();
+    params.append('data',JSON.stringify({name:user.name,biz:user.biz,ceo:user.ceo,address:user.address,contacts,countries:selCountries,carConds}));
+    await fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:params.toString()});
+    document.getElementById('savedSummary').innerHTML=`<p style="font-weight:600;margin-bottom:6px;color:#1A2340">${user.name}</p><p style="color:#6B7A99;font-size:13px;margin-bottom:4px">수출 국가 ${selCountries.length}개 · 관심차종 조건 ${carConds.length}건</p><p style="color:#A0AABB;font-size:12px">등록일시: ${new Date().toLocaleString('ko-KR')}</p>`;
+    goPage(5);
+  }catch(e){st('saveStatus','저장 중 오류가 발생했습니다. 다시 시도해 주세요.','err');btn.disabled=false;}
+}
+
+function resetAll(){
+  contacts=[];selCountries=[];carConds=[];selectedCars=[];user={};
+  ['compName','bizNo','ceoName','address','ctName','ctPhone','ctRole'].forEach(id=>document.getElementById(id).value='');
+  renderContacts();buildCountryGroups('');renderSelCountries();goPage(1);
+}
+
+buildCountryGroups('');
+</script>
+</body>
+</html>
 
