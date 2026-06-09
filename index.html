@@ -267,7 +267,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Malgun Gothic',san
 </div>
 
 <script>
-const SHEET_URL="https://script.google.com/macros/s/AKfycbwj0FJsJqo9NmEGifzDYXnSbiTIePGvqgJ506_XvHMGaV5blc4U0zaR-VOQs8GoFi_oNQ/exec";
+const SHEET_URL="https://script.google.com/macros/s/AKfycbzvJ6gSJ9l_uiJw2emnqLUlvw3Vh05Hac-nubs07IsG6fwNzIBaMTDrdceYKfLmSdqqCw/exec";
 
 const ALL_COUNTRIES={
   "아시아":["일본","중국","대만","홍콩","싱가포르","말레이시아","태국","인도네시아","필리핀","베트남","인도","미얀마","캄보디아","몽골","카자흐스탄","우즈베키스탄","키르기즈스탄","타지키스탄","투르크메니스탄","아제르바이잔","조지아","아르메니아"],
@@ -422,9 +422,15 @@ async function doSave(){
   const btn=document.getElementById('saveBtn');btn.disabled=true;
   st('saveStatus','구글 시트에 저장 중...','ing');
   try{
-    const params=new URLSearchParams();
-    params.append('data',JSON.stringify({name:user.name,biz:user.biz,ceo:user.ceo,address:user.address,contacts,countries:selCountries,carConds}));
-    await fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:params.toString()});
+    const payload = JSON.stringify({name:user.name,biz:user.biz,ceo:user.ceo,address:user.address,contacts,countries:selCountries,carConds});
+    const params = new URLSearchParams();
+    params.append('data', payload);
+    const res = await fetch(SHEET_URL, {
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'application/x-www-form-urlencoded'},
+      body: params.toString()
+    });
     document.getElementById('savedSummary').innerHTML=`<p style="font-weight:600;margin-bottom:6px;color:#1A2340">${user.name}</p><p style="color:#6B7A99;font-size:13px;margin-bottom:4px">수출 국가 ${selCountries.length}개 · 관심차종 조건 ${carConds.length}건</p><p style="color:#A0AABB;font-size:12px">등록일시: ${new Date().toLocaleString('ko-KR')}</p>`;
     goPage(5);
   }catch(e){st('saveStatus','저장 중 오류가 발생했습니다. 다시 시도해 주세요.','err');btn.disabled=false;}
@@ -440,4 +446,3 @@ buildCountryGroups('');
 </script>
 </body>
 </html>
-
