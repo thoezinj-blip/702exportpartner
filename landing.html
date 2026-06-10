@@ -79,6 +79,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Malgun Gothic',san
 .footer-text{font-size:11px;color:#6B7A99;line-height:1.8}
 .footer-text strong{color:#AABBD4}
 
+@media(max-width:600px){
+  .qr-box{display:none}
+  .cta-wrap{flex-direction:column}
+}
 @media(max-width:420px){
   .hero-title{font-size:26px}
   .benefits{grid-template-columns:1fr 1fr}
@@ -89,11 +93,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Malgun Gothic',san
 </head>
 <body>
 
-<div class="header">
-  <div class="logo">702</div>
+<div class="header" style="justify-content:center;text-align:center">
   <div>
-    <div class="header-title">코오롱모빌리티그룹</div>
-    <div class="header-sub">KOLON MOBILITY GROUP</div>
+    <div class="header-title" style="font-size:17px">코오롱모빌리티그룹</div>
+    <div class="header-sub" style="font-size:12px;letter-spacing:.08em">KOLON MOBILITY GROUP</div>
   </div>
 </div>
 
@@ -147,8 +150,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Malgun Gothic',san
       <div class="step-list">
         <div class="step-item">
           <div class="step-num">1</div>
-          <div class="step-title">QR 스캔</div>
-          <div class="step-desc">우측 QR코드 스캔<br>또는 담당자 연락</div>
+          <div class="step-title">담당자 연락</div>
+          <div class="step-desc">아래 버튼 클릭<br>또는 담당자에게 연락</div>
         </div>
         <div class="step-item">
           <div class="step-num">2</div>
@@ -177,21 +180,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Malgun Gothic',san
 
   <div class="cta-section">
     <div class="cta-wrap">
-      <div class="qr-box">
-        <div class="qr-placeholder">
-          <div style="font-size:11px;color:#A0AABB;text-align:center;padding:8px">QR코드<br>삽입 예정</div>
-        </div>
-        <div class="qr-label">등록 신청서<br>스캔하여 작성</div>
-      </div>
+
       <div class="cta-info">
         <div class="cta-title">지금 바로 파트너 등록하세요</div>
-        <div class="cta-desc">아래 버튼을 클릭하거나<br>QR코드를 스캔해 등록 신청서를 작성해 주세요.</div>
+        <div class="cta-desc">아래 버튼을 클릭해 등록 신청서를 작성해 주세요.</div>
         <div class="cta-items">
           <div class="cta-item"><span class="cta-dot"></span>사업자등록증 준비</div>
           <div class="cta-item"><span class="cta-dot"></span>담당자 연락처 및 명함</div>
+          <div class="cta-item"><span class="cta-dot"></span>이메일 주소 <span style="font-size:11px;color:#A0AABB">(재고 리스트 수신용)</span></div>
           <div class="cta-item"><span class="cta-dot"></span>관심 차종 · 수출 국가</div>
         </div>
-        <a href="index.html" class="btn-register">✏️ 파트너 등록 신청하기</a>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <a href="index.html" class="btn-register" style="background:#1A2340">✏️ 신규 파트너 등록</a>
+          <a href="interest.html" class="btn-register" style="background:#C0792B">🔄 관심차종 변경 (기존 업체)</a>
+        </div>
       </div>
     </div>
   </div>
@@ -240,8 +242,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Malgun Gothic',san
       <div class="step-list">
         <div class="step-item">
           <div class="step-num">1</div>
-          <div class="step-title">Scan QR Code</div>
-          <div class="step-desc">Scan the QR code<br>or contact our team</div>
+          <div class="step-title">Contact Us</div>
+          <div class="step-desc">Click the button below<br>or contact our team</div>
         </div>
         <div class="step-item">
           <div class="step-num">2</div>
@@ -270,21 +272,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Malgun Gothic',san
 
   <div class="cta-section">
     <div class="cta-wrap">
-      <div class="qr-box">
-        <div class="qr-placeholder">
-          <div style="font-size:11px;color:#A0AABB;text-align:center;padding:8px">QR Code<br>Coming Soon</div>
-        </div>
-        <div class="qr-label">Scan to complete<br>registration form</div>
-      </div>
+
       <div class="cta-info">
         <div class="cta-title">Register as a Partner Now</div>
-        <div class="cta-desc">Click the button below or scan the QR code to complete the registration form.</div>
+        <div class="cta-desc">Click the button below to complete the registration form.</div>
         <div class="cta-items">
           <div class="cta-item"><span class="cta-dot"></span>Business registration certificate</div>
           <div class="cta-item"><span class="cta-dot"></span>Contact person's business card</div>
+          <div class="cta-item"><span class="cta-dot"></span>Email address <span style="font-size:11px;color:#A0AABB">(for inventory list)</span></div>
           <div class="cta-item"><span class="cta-dot"></span>Preferred car models & export countries</div>
         </div>
-        <a href="index.html" class="btn-register">✏️ Apply for Partnership</a>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <a href="index.html" class="btn-register" style="background:#1A2340">✏️ New Partner Registration</a>
+          <a href="interest.html" class="btn-register" style="background:#C0792B">🔄 Update Preferred Cars (Existing Partners)</a>
+        </div>
       </div>
     </div>
   </div>
