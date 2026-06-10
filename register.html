@@ -497,17 +497,40 @@ function buildCarGroups(filter){
       return ft.length?[model,ft]:null;
     }).filter(Boolean);
     if(!filtered.length) return;
-    const brandDiv=document.createElement('div'); brandDiv.style.marginBottom='14px';
-    let html=`<p style="font-size:12px;font-weight:700;color:#C0792B;margin-bottom:8px;padding:4px 8px;background:#FEF4E8;border-radius:4px;display:inline-block">${brand}</p>`;
+    const brandDiv=document.createElement('div');
+    brandDiv.style.marginBottom='14px';
+    const brandTitle=document.createElement('p');
+    brandTitle.style.cssText='font-size:12px;font-weight:700;color:#C0792B;margin-bottom:8px;padding:4px 8px;background:#FEF4E8;border-radius:4px;display:inline-block';
+    brandTitle.textContent=brand;
+    brandDiv.appendChild(brandTitle);
     filtered.forEach(([model,trims])=>{
-      html+=`<div style="margin-bottom:10px;margin-left:4px">
-        <p style="font-size:11px;font-weight:600;color:#1A2340;margin-bottom:6px">▸ ${model}</p>
-        <div class="check-group" style="margin-left:8px">${trims.map(t=>{
-          const k=`${brand} ${model} ${t}`;
-          return`<label class="check-item"><input type="radio" name="car_select" class="car-chk" value="${k}" ${selectedCar===k?'checked':''} onchange="selectCar('${k}')"> ${t}</label>`;
-        }).join('')}</div></div>`;
+      const modelDiv=document.createElement('div');
+      modelDiv.style.cssText='margin-bottom:10px;margin-left:4px';
+      const modelTitle=document.createElement('p');
+      modelTitle.style.cssText='font-size:11px;font-weight:600;color:#1A2340;margin-bottom:6px';
+      modelTitle.textContent='▸ '+model;
+      modelDiv.appendChild(modelTitle);
+      const group=document.createElement('div');
+      group.className='check-group';
+      group.style.marginLeft='8px';
+      trims.forEach(t=>{
+        const k=brand+' '+model+' '+t;
+        const label=document.createElement('label');
+        label.className='check-item';
+        const radio=document.createElement('input');
+        radio.type='radio';
+        radio.name='car_select';
+        radio.className='car-chk';
+        radio.value=k;
+        if(selectedCar===k) radio.checked=true;
+        radio.addEventListener('change', function(){selectCar(k);});
+        label.appendChild(radio);
+        label.appendChild(document.createTextNode(' '+t));
+        group.appendChild(label);
+      });
+      modelDiv.appendChild(group);
+      brandDiv.appendChild(modelDiv);
     });
-    brandDiv.innerHTML=html;
     el.appendChild(brandDiv);
   });
 }
