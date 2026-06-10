@@ -444,8 +444,26 @@ function buildCountryGroups(filter){
     const list=filter?countries.filter(c=>c.includes(filter)):countries;
     if(!list.length) return;
     const d=document.createElement('div'); d.style.marginBottom='14px';
-    d.innerHTML=`<p style="font-size:12px;font-weight:600;color:#C0792B;margin-bottom:8px">${region}</p>
-      <div class="check-group">${list.map(c=>`<label class="check-item"><input type="checkbox" class="ctr-chk" value="${c}" ${selCountries.includes(c)?'checked':''} onchange="toggleCountry('${c}',this.checked)"> ${c}</label>`).join('')}</div>`;
+    const regionTitle=document.createElement('p');
+    regionTitle.style.cssText='font-size:12px;font-weight:600;color:#C0792B;margin-bottom:8px';
+    regionTitle.textContent=region;
+    d.appendChild(regionTitle);
+    const group=document.createElement('div');
+    group.className='check-group';
+    list.forEach(c=>{
+      const label=document.createElement('label');
+      label.className='check-item';
+      const cb=document.createElement('input');
+      cb.type='checkbox';
+      cb.className='ctr-chk';
+      cb.value=c;
+      if(selCountries.includes(c)) cb.checked=true;
+      cb.addEventListener('change', function(){toggleCountry(c, this.checked);});
+      label.appendChild(cb);
+      label.appendChild(document.createTextNode(' '+c));
+      group.appendChild(label);
+    });
+    d.appendChild(group);
     el.appendChild(d);
   });
 }
