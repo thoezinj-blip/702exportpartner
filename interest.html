@@ -271,11 +271,9 @@ function st(id,msg,t){
 
 function doStep1(){
   const name=document.getElementById('compName').value.trim();
-  const biz=document.getElementById('bizNo').value.trim();
   const phone=document.getElementById('phone').value.trim();
-  if(!name||!biz||!phone){st('authStatus','모든 항목을 입력해 주세요.','err');return;}
-  if(biz.replace(/-/g,'').length<10){st('authStatus','사업자등록번호를 정확히 입력해 주세요.','err');return;}
-  user={name,biz,phone,email:document.getElementById('email').value.trim()};
+  if(!name||!phone){st('authStatus','담당자명과 전화번호를 입력해 주세요.','err');return;}
+  user={name,biz:'',phone,email:''};
   initMakers();
   goPage(2);
 }
