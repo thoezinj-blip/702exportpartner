@@ -96,20 +96,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Malgun Gothic',san
         신규 등록은 <a href="index.html" style="color:#C0792B;font-weight:600">신규 파트너 등록</a>을 이용해 주세요.
       </div>
       <div class="field">
-        <label>업체명 *</label>
-        <input type="text" id="compName" placeholder="등록 시 입력한 업체명">
-      </div>
-      <div class="field">
-        <label>사업자등록번호 *</label>
-        <input type="text" id="bizNo" placeholder="예) 000-00-00000" maxlength="12">
+        <label>담당자명 *</label>
+        <input type="text" id="compName" placeholder="홍길동">
       </div>
       <div class="field">
         <label>담당자 전화번호 *</label>
         <input type="text" id="phone" placeholder="예) 010-0000-0000" maxlength="13">
-      </div>
-      <div class="field">
-        <label>이메일 <span style="font-size:11px;color:#A0AABB;font-weight:400">(재고 리스트 수신용)</span></label>
-        <input type="email" id="email" placeholder="예) export@company.com">
       </div>
       <div id="authStatus"></div>
       <button class="btn-main" onclick="doStep1()">확인 및 다음 →</button>
@@ -229,10 +221,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Malgun Gothic',san
     <div class="card">
       <div class="card-title">📋 변경 내용 확인</div>
       <div class="sec-label">업체 정보</div>
-      <div class="info-row"><span class="info-lbl">업체명</span><span class="info-val" id="c_name"></span></div>
-      <div class="info-row"><span class="info-lbl">사업자번호</span><span class="info-val" id="c_biz"></span></div>
-      <div class="info-row"><span class="info-lbl">담당자 연락처</span><span class="info-val" id="c_phone"></span></div>
-      <div class="info-row"><span class="info-lbl">이메일</span><span class="info-val" id="c_email"></span></div>
+      <div class="info-row"><span class="info-lbl">담당자명</span><span class="info-val" id="c_name"></span></div>
+      <div class="info-row"><span class="info-lbl">연락처</span><span class="info-val" id="c_phone"></span></div>
       <div class="sec-label">변경 관심차종</div>
       <div id="c_cars"></div>
       <div id="saveStatus"></div>
@@ -411,8 +401,6 @@ function rmCarCond(i){carConds.splice(i,1);renderCarConds();}
 function doStep2(){
   if(!carConds.length){alert('관심차종을 1개 이상 등록해 주세요.');return;}
   document.getElementById('c_name').textContent=user.name;
-  document.getElementById('c_email').textContent=user.email||'-';
-  document.getElementById('c_biz').textContent=user.biz;
   document.getElementById('c_phone').textContent=user.phone;
   document.getElementById('c_cars').innerHTML=carConds.map((c,i)=>`
     <div style="background:#F4F6FA;border-radius:8px;padding:10px 12px;margin-bottom:8px;font-size:13px">
